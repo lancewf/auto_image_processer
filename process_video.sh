@@ -18,7 +18,7 @@ processFile() {
        ffmpeg -i $filename/$filenameWithExtention -b 2500k -vf scale=320:-2 $ogvFilename
 
        echo `date` " creating m4v: $m4vFilename"
-       ffmpeg -i $filename/$filenameWithExtention -b 2500k -vf scale=320:-2 $m4vFilename
+       ffmpeg -i $filename/$filenameWithExtention -b 2500k -vf scale=320:-2 -strict -2 $m4vFilename
        
        echo `date` " finished" >> $filename/finished.txt
        echo `date` " finished processing $file"
