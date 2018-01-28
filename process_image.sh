@@ -2,10 +2,10 @@
 
 processFile() {
        file=$1
-       echo `date` " processing: $file"
+       echo `date` " processing: '$file'"
 
-       filenameWithExtention=${file##*/}
-       filenameWithExtention=${file/ /_}
+       # remove spaces in the file name
+       filenameWithExtention=$(echo -e "${file}" | tr -s ' ' | tr ' ' '_')
        filename=${filenameWithExtention%.*}
 
        mkdir $filename
@@ -17,7 +17,7 @@ processFile() {
        ffmpeg -i $filename/$filenameWithExtention -vf scale=250:-2 $thumbnailFilename
        
        echo `date` " finished" >> $filename/finished.txt
-       echo `date` " finished processing $file"
+       echo `date` " finished processing '$file'"
 }
 
 checkForImages() {
@@ -25,7 +25,7 @@ checkForImages() {
  for file in *
  do
     if [[ -f $file ]]; then
-     echo "working file: $file"
+     #echo `date` " working file: '$file'"
      fileExtention=${file##*.}
      fileExtention=${file,,}
      lastModifiedTime=`stat -c %Y "$file"`
@@ -35,9 +35,11 @@ checkForImages() {
         if [[ "$fileExtention" == *.jpeg ]] || [[ "$fileExtention" == *.jpg ]] 
         then
 	  processFile "$file"
+	else
+	  echo `date` " do not suport file '$file'"
         fi
      else 
-        echo `date` " $file upload in progress"
+        echo `date` " '$file' upload in progress"
      fi
 
     fi

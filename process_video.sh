@@ -2,17 +2,17 @@
 
 processFile() {
        file=$1
-       echo `date` " processing: $file"
+       echo `date` " processing: '$file'"
 
-       filenameWithExtention=${file##*/}
-       filenameWithExtention=${file/ /_}
+       # remove spaces in the file name
+       filenameWithExtention=$(echo -e "${file}" | tr -s ' ' | tr ' ' '_')
        filename=${filenameWithExtention%.*}
 
        mkdir $filename
        mv "$file" $filename/$filenameWithExtention
 
-       ogvFilename="$filename/${filename}_2500kbitrate_320x.ogv"
-       m4vFilename="$filename/${filename}_2500kbitrate_320x.m4v"
+       ogvFilename="$filename/${filename}.ogv"
+       m4vFilename="$filename/${filename}.m4v"
 
        echo `date` " creating ogv: $ogvFilename"
        ffmpeg -i $filename/$filenameWithExtention -b 2500k -vf scale=320:-2 $ogvFilename
@@ -21,7 +21,7 @@ processFile() {
        ffmpeg -i $filename/$filenameWithExtention -b 2500k -vf scale=320:-2 -strict -2 $m4vFilename
        
        echo `date` " finished" >> $filename/finished.txt
-       echo `date` " finished processing $file"
+       echo `date` " finished processing '$file'"
 }
 
 checkForVideos() {
@@ -39,9 +39,11 @@ checkForVideos() {
         if [[ "$fileExtention" == *.mov ]] || [[ "$fileExtention" == *.mp4 ]] 
         then
 	  processFile "$file"
+        else
+	  echo `date` " do not suport file: '$file'"
         fi
      else 
-        echo `date` " $file upload in progress"
+        echo `date` " '$file' upload in progress"
      fi
 
     fi
