@@ -1,0 +1,13 @@
+#!/bin/bash
+
+exec 2>&1
+
+#source {{pkg.path}}/static/process_image.sh
+source {{pkg.path}}/static/process_video.sh
+
+while true
+do 
+  sleep {{cfg.wait_seconds}};
+  #checkForImages "{{cfg.image.watch_folder}}"
+  checkForVideos "{{cfg.video.watch_folder}}"
+done

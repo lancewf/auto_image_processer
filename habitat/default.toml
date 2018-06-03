@@ -1,0 +1,7 @@
+wait_seconds = 30
+
+[image]
+watch_folder = "/src/"
+
+[video]
+watch_folder = "/src/"
