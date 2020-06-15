@@ -1,5 +1,6 @@
 # auto_image_processer
 
+Install ffmpeg with `apt install ffmpeg`
 
 # crontab setup
 
